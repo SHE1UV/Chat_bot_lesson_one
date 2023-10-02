@@ -16,7 +16,7 @@ pip install -r requirements.txt
 
 ### Как запустить проект
 
-Запустите скрипт можно с помощью команды:
+Запустить скрипт можно с помощью команды:
 
 ```
 python main.py --chat_id YOUR_CHAT_ID

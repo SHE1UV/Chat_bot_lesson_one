@@ -11,7 +11,6 @@ def parse_args():
     parser.add_argument("--chat_id", type=int, required=True, help="Ваш chat_id")
     return parser.parse_args()
 
-
 def main():
     logging.basicConfig(
         level=logging.INFO,
@@ -67,23 +66,16 @@ def main():
 
                         bot.sendMessage(telegram_id, message)
 
-            elif status == 'timeout':
-                logging.info("Превышено время ожидания. Повторный запрос...")
-                time.sleep(60)
-
-            else:
-                timestamp = None
-
         except requests.exceptions.ReadTimeout:
             logging.error("Превышено время ожидания запроса.")
-            time.sleep(60)
         except requests.exceptions.ConnectionError:
             logging.error("Произошла ошибка при установлении соединения.")
             logging.info("Ожидаем восстановление соединения...")
-            time.sleep(60)
         except requests.exceptions.RequestException as e:
             logging.error(f"Произошла ошибка при выполнении запроса: {e}")
-            
+
+        time.sleep(60)
+
 
 if __name__ == '__main__':
     main()

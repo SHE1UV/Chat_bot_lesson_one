@@ -11,6 +11,7 @@ def parse_args():
     parser.add_argument("--chat_id", type=int, required=True, help="Ваш chat_id")
     return parser.parse_args()
 
+
 def main():
     logging.basicConfig(
         level=logging.INFO,
@@ -27,7 +28,7 @@ def main():
 
     bot = telepot.Bot(telegram_bot_api)
     args = parse_args()
-    telegram_id = args.chat_id
+    chat_id = args.chat_id
 
     devman_url = "https://dvmn.org/api/user_reviews/"
     devman_long_polling_params = {
@@ -64,7 +65,7 @@ def main():
                         else:
                             message = f"Преподаватель проверил работу!\nУрок: {lesson_title}\nРабота принята\nСсылка на урок: {lesson_url}"
 
-                        bot.sendMessage(telegram_id, message)
+                        bot.sendMessage(chat_id, message)
 
         except requests.exceptions.ReadTimeout:
             logging.error("Превышено время ожидания запроса.")

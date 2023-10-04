@@ -10,10 +10,10 @@ def parse_args():
     parser = argparse.ArgumentParser(description="Telegram Bot")
     parser.add_argument("--chat_id", type=int, required=True, help="Ваш chat_id")
     return parser.parse_args()
-    
+
 
 def main():
-   logging.basicConfig(
+    logging.basicConfig(
         level=logging.INFO,
         format='%(asctime)s - %(levelname)s - %(message)s',
         filename='bot.log'
@@ -48,12 +48,12 @@ def main():
 
             response = requests.get(devman_url, headers=headers, params=params)
             response.raise_for_status()
-            response_json = response.json()
-            status = response_json.get('status')
-            timestamp = response_json.get('last_attempt_timestamp')
+            decoded_response = response.json()
+            status = decoded_response.get('status')
+            timestamp = decoded_response.get('last_attempt_timestamp')
 
             if status == 'found':
-                new_attempts = response_json.get('new_attempts')
+                new_attempts = decoded_response.get('new_attempts')
                 if new_attempts and isinstance(new_attempts, list) and len(new_attempts) > 0:
                     lesson_title = new_attempts[0].get('lesson_title')
                     is_negative = new_attempts[0].get('is_negative')
@@ -83,7 +83,7 @@ def main():
             time.sleep(60)
         except requests.exceptions.RequestException as e:
             logging.error(f"Произошла ошибка при выполнении запроса: {e}")
-
+            
 
 if __name__ == '__main__':
     main()

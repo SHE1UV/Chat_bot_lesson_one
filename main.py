@@ -31,10 +31,6 @@ def main():
     chat_id = args.chat_id
 
     devman_url = "https://dvmn.org/api/user_reviews/"
-    devman_long_polling_params = {
-        "timestamp": "1555493856"
-    }
-
     headers = {
         "Authorization": f"Token {devman_api}"
     }
@@ -42,18 +38,18 @@ def main():
 
     while True:
         try:
-            params = devman_long_polling_params.copy()
+            params = {}
             if timestamp:
                 params["timestamp"] = timestamp
 
             response = requests.get(devman_url, headers=headers, params=params)
             response.raise_for_status()
-            decoded_response = response.json()
-            status = decoded_response.get('status')
+
+            status = response.json().get('status')
             timestamp = decoded_response.get('last_attempt_timestamp')
 
             if status == 'found':
-                new_attempts = decoded_response.get('new_attempts')
+                new_attempts = response.json().get('new_attempts')
                 if new_attempts and isinstance(new_attempts, list) and len(new_attempts) > 0:
                     lesson_title = new_attempts[0].get('lesson_title')
                     is_negative = new_attempts[0].get('is_negative')
@@ -72,10 +68,9 @@ def main():
         except requests.exceptions.ConnectionError:
             logging.error("Произошла ошибка при установлении соединения.")
             logging.info("Ожидаем восстановление соединения...")
+            time.sleep(60)
         except requests.exceptions.RequestException as e:
             logging.error(f"Произошла ошибка при выполнении запроса: {e}")
-
-        time.sleep(60)
 
 
 if __name__ == '__main__':

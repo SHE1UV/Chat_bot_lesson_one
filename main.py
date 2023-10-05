@@ -44,12 +44,12 @@ def main():
 
             response = requests.get(devman_url, headers=headers, params=params)
             response.raise_for_status()
-            response_status = response.json()
-            status = response_status.get('status')
+            checking_tasks = response.json()
+            status = checking_tasks.get('status')
             timestamp = decoded_response.get('last_attempt_timestamp')
 
             if status == 'found':
-                new_attempts = response_status.get('new_attempts')
+                new_attempts = checking_tasks.get('new_attempts')
                 if new_attempts and isinstance(new_attempts, list) and len(new_attempts) > 0:
                     lesson_title = new_attempts[0].get('lesson_title')
                     is_negative = new_attempts[0].get('is_negative')

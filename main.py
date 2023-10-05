@@ -46,7 +46,7 @@ def main():
             response.raise_for_status()
             checking_tasks = response.json()
             status = checking_tasks.get('status')
-            timestamp = decoded_response.get('last_attempt_timestamp')
+            timestamp = checking_tasks.get('last_attempt_timestamp')
 
             if status == 'found':
                 new_attempts = checking_tasks.get('new_attempts')
